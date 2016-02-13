@@ -193,6 +193,9 @@ void handle_gpio_interrupt(void) {
 void handle_key_combo(char letter, int number) {
 	char combo[3];
 	char *sys_cmd;
+	if (number == 0) {
+		number = 10;
+	}
 
 	printf("Combo: %c%d\n", letter, number);
 
