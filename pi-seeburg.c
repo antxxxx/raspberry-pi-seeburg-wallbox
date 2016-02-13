@@ -44,6 +44,7 @@ void handle_gpio_interrupt(void);
 void handle_key_combo(char letter, int number);
 
 int main(int argc, char **argv) {
+	printf("Starting\n");
 	int c;
 	struct timeval now;
 	unsigned long diff;
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
 		switch (c) {
 			case 'd':
 				debug = 1;
+				printf("Debug option passed\n");
 				break;
 			// Programme to pass the generated key combo to for handling
 			case 'p':
@@ -208,6 +210,8 @@ void handle_key_combo(char letter, int number) {
 		sys_cmd = realloc(sys_cmd, strlen(sys_cmd) + sizeof(combo)); // Cause we lose a \0 we don't need to add 1 for the space
 		strcat(sys_cmd, " \0");
 		strcat(sys_cmd, combo);
+		printf(sys_cmd);
+		printf("\n");
 
 		// Run the command. Return 0 is good.
 		if (!system(sys_cmd)) {
