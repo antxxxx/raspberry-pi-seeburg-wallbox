@@ -17,11 +17,11 @@
 #define PIN 2
 
 // How much time a change must be since the last in order to count as a change
-#define IGNORE_CHANGE_BELOW_USEC 10000
+#define IGNORE_CHANGE_BELOW_USEC 40000
 // What is the minimum time since the last pulse for a pulse to count as "after the gap"
-#define MIN_GAP_LEN_USEC 250000
+#define MIN_GAP_LEN_USEC 200000
 // What is the mimimum time since the last pulse for a pulse to count as a new train
-#define MIN_TRAIN_BOUNDARY_USEC 400000 // 0.4 sec
+#define MIN_TRAIN_BOUNDARY_USEC 300000 // 0.3 sec
 // How often to update the last change value to stop diff overflowing
 #define OVERFLOW_PROTECTION_INTERVAL_USEC 60000000 // 60 secs
 
