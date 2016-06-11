@@ -44,7 +44,7 @@ void handle_gpio_interrupt(void);
 void handle_key_combo(char letter, int number);
 
 int main(int argc, char **argv) {
-	printf("Starting\n");
+	fprintf(stdout, "Starting\n");
 	int c;
 	struct timeval now;
 	unsigned long diff;
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 		switch (c) {
 			case 'd':
 				debug = 1;
-				printf("Debug option passed\n");
+				fprintf(stdout, "Debug option passed\n");
 				break;
 			// Programme to pass the generated key combo to for handling
 			case 'p':
@@ -95,13 +95,13 @@ int main(int argc, char **argv) {
 				post = post_gap_pulses - 1;
 
 				if (debug)
-					printf("Locking\n");
+					fprintf(stdout, "Locking\n");
 
 				lock = 1;
 
 				if (debug) {
-					printf("Locked\n");
-					printf("Before calc. Pre: %d Post: %d\n", pre, post);
+					fprintf(stdout, "Locked\n");
+					fprintf(stdout, "Before calc. Pre: %d Post: %d\n", pre, post);
 				}
 
 				// Calc the key combination...
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
 			// Reset counters
 			if (pre_gap_pulses || post_gap_pulses) {
 				if (debug)
-					printf("Reset! %lu\n", diff);
+					fprintf(stdout, "Reset! %lu\n", diff);
 
 				pre_gap_pulses = 0;
 				post_gap_pulses = 0;
@@ -125,19 +125,19 @@ int main(int argc, char **argv) {
 
 			if (lock) {
 				if (debug)
-					printf("Unlocking\n");
+					fprintf(stdout, "Unlocking\n");
 
 				lock = 0;
 
 				if (debug)
-					printf("Unlocked\n");
+					fprintf(stdout, "Unlocked\n");
 			}
 		}
 
 		// Should update time to stop diff overflowing?
 		if (diff > OVERFLOW_PROTECTION_INTERVAL_USEC) {
 			if (debug)
-				printf("Overflow protection\n");
+				fprintf(stdout,  "Overflow protection\n");
 
 			gettimeofday(&last_change, NULL);
 		}
@@ -180,14 +180,14 @@ void handle_gpio_interrupt(void) {
 			}
 
 			if (debug)
-				printf("Pulse! Pre: %d Post: %d Diff: %lu\n", pre_gap_pulses, post_gap_pulses, diff);
+				fprintf(stdout, "Pulse! Pre: %d Post: %d Diff: %lu\n", pre_gap_pulses, post_gap_pulses, diff);
 		}
 
 		// Record when the last change was
 		last_change = now;
 	}
 	else {
-		printf("Locked. Ignoring interrupt\n");
+		fprintf(stdout, "Locked. Ignoring interrupt\n");
 	}
 }
 
@@ -199,7 +199,7 @@ void handle_key_combo(char letter, int number) {
 		number = 10;
 	}
 
-	printf("Combo: %c%d\n", letter, number);
+	fprintf(stdout, "Combo: %c%d\n", letter, number);
 
 	if (pass_to) {
 		// Make a string representation of our key combo
@@ -210,12 +210,12 @@ void handle_key_combo(char letter, int number) {
 		sys_cmd = realloc(sys_cmd, strlen(sys_cmd) + sizeof(combo)); // Cause we lose a \0 we don't need to add 1 for the space
 		strcat(sys_cmd, " \0");
 		strcat(sys_cmd, combo);
-		printf(sys_cmd);
-		printf("\n");
+		fprintf(stdout, sys_cmd);
+		fprintf(stdout, "\n");
 
 		// Run the command. Return 0 is good.
 		if (!system(sys_cmd)) {
-			printf("Passed key combo through to the specified programme\n");
+			fprintf(stdout, "Passed key combo through to the specified programme\n");
 		}
 
 		// Can has memory?
